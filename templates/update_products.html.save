@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Product</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Update Product</h1>
+        <form action="/api/secret/update_products" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="pid" value="{{ product.pid }}">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="info">Info:</label>
+                <textarea class="form-control" id="info" name="info" required>{{ product.info }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description" required>{{ product.description }}</textarea>
+            </div>
+	    <div class="form-group">
+                <label for="description2">Description2:</label>
+                <textarea class="form-control" id="description2" name="description2" required>{{ product.description2 }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="brand">Brand:</label>
+                <input type="text" class="form-control" id="brand" name="brand" value="{{ product.brand }}" required>
+            </div>
+            <div class="form-group">
+                <label for="color">Color:</label>
+                <input type="text" class="form-control" id="color" name="color" value="{{ product.color }}" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" value="{{ product.price }}" required>
+            </div>
+            <div class="form-group">
+                <label for="productNo">Product Number:</label>
+                <input type="text" class="form-control" id="productNo" name="productNo" value="{{ product.productNo }}" required>
+            </div>
+
+	    <div class="form-group">
+                <label for="price">Price dis:</label>
+                <input type="number" class="form-control" id="price" name="price" value="{{ product.price }}" required>
+            </div>
+            <div class="form-group">
+                <label for="productImages">Product Images:</label>
+                <input type="file" class="form-control-file" id="productImages" name="product_images[]" value="product_paths" multiple accept=".jpg, .jpeg, .png">
+            </div>
+            <div class="form-group">
+                <label for="productImage">Main Product Image:</label>
+                <input type="file" class="form-control-file" id="productImage" name="product_path" value="product_path" accept=".jpg, .jpeg, .png, .gif">
+            </div>
+               <!-- Category dropdown -->
+               <div class="form-group">
+                <label for="cid">Category:</label>
+                <select class="form-control" id="cid" name="cid" required>
+                    <option value="" selected disabled>Select Category</option>
+                    {% for category in categories %}
+                        <option value="{{ category.cid }}" {% if category.cid == product.cid %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Subcategory dropdown -->
+            <div class="form-group">
+                <label for="scid">Subcategory:</label>
+                <select class="form-control" id="scid" name="scid" required disabled>
+                    <option value="" selected disabled>Select Subcategory</option>
+                    <!-- The options will be populated dynamically using JavaScript -->
+                </select>
+
+            </div>
+            <button type="submit" class="btn btn-primary">Update Product</button>
+        </form>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery scripts -->
+   
+    <!-- Add Bootstrap JS and jQuery scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Add JavaScript to dynamically update the subcategory dropdown based on the selected category -->
+    <script>
+        $(document).ready(function () {
+            const subcategoryDropdown = $("#scid");
+            const categoryDropdown = $("#cid");
+    
+            // Get subcategories data from the rendered template
+            const subcategoriesData = JSON.parse('{{ subcategories | tojson | safe }}');
+    
+            categoryDropdown.on("change", function () {
+                const selectedCategoryId = $(this).val();
+                subcategoryDropdown.empty().prop("disabled", true);
+    
+                if (selectedCategoryId) {
+                    const selectedSubcategories = subcategoriesData[selectedCategoryId];
+                    if (selectedSubcategories) {
+                        selectedSubcategories.forEach((subcategory) => {
+                            const option = $(`<option value="${subcategory.scid}">${subcategory.name}</option>`);
+                            if (subcategory.scid === "{{ product.scid }}") {
+                                option.prop('selected', true);
+                            }
+                            subcategoryDropdown.append(option);
+                        });
+                        subcategoryDropdown.prop("disabled", false);
+                    } else {
+                        console.error("No subcategories found for the selected category");
+                    }
+                }
+            });
+    
+            // Trigger the change event on page load to pre-fill the subcategory
+            categoryDropdown.trigger('change');
+        });
+    </script>
+    
+    
+    
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!-- templates/read_users.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Read Users</title>
+    <!-- Add Bootstrap CSS link -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Users List</h1>
+        <div class="input-group mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search users...">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+            </div>
+        </div>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Profile Path</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% for user in user_list %}
+                <tr>
+                    <td>{{ user.uid }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone_number }}</td>
+                    <td>{{ user.address }} - {{ user.address_number }}</td>
+
+                    <td>{{ user.profile_path }}</td>
+                </tr>
+                {% endfor %}    
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        // Original table contents
+        var originalTable = $('#tableBody').html();
+
+        // Function to filter the table based on search input
+        function filterTable(searchValue) {
+            var filteredTable = "";
+            $('#tableBody tr').each(function () {
+                if ($(this).text().toLowerCase().includes(searchValue.toLowerCase())) {
+                    filteredTable += $(this).prop('outerHTML');
+                }
+            });
+            $('#tableBody').html(filteredTable);
+        }
+
+        // Handle search button click
+        $('#searchButton').click(function () {
+            var searchInput = $('#searchInput').val();
+            filterTable(searchInput);
+        });
+
+        // Reset table to original when search input is cleared
+        $('#searchInput').keyup(function () {
+            if ($(this).val() === "") {
+                $('#tableBody').html(originalTable);
+            }
+        });
+    });
+</script>
+</html>

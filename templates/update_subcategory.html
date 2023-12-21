@@ -1,0 +1,38 @@
+<!-- templates/update_category.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Subcategory</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Update Subcategory</h1>
+        <form method="post" action="/subcategories/update_subcategory">
+            <input type="hidden" name="scid" value="{{ subcategory.scid }}">
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ subcategory.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="info">Info:</label>
+                <input type="text" class="form-control" id="info" name="info" value="{{ subcategory.info }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="cid">Category ID:</label>
+                <select class="form-control" id="cid" name="cid" required>
+                    <!-- Display a dropdown of all categories from Categories table -->
+                    {% for category in category_list %}
+                    <option value="{{ category.cid }}" {% if category.cid == subcategory.cid %} selected {% endif %}>{{ category.cid }} - {{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Subcategory</button>
+            
+        </form>
+    </div>
+</body>
+</html>

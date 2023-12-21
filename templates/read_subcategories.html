@@ -1,0 +1,60 @@
+<!-- templates/read_categories.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subcategories</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Subcategories</h1>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>SCID</th>
+                    <th>Name</th>
+                    <th>Info</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subcategory in subcategory_list %}
+                <tr>
+                    <td>{{ subcategory.scid }}</td>
+                    <td>{{ subcategory.name }}</td>
+                    <td>{{ subcategory.info }}</td>
+                    <td>
+                        {% for category in category_list %}
+                            {% if subcategory.cid == category.cid %}
+                                {{ category.name }} - {{category.cid}}
+                            {% endif %}
+                        {% endfor %}    
+                    </td>
+                    <td>
+                        <!-- Link to the update page for the subcategory -->
+                        <a href="/subcategories/update_subcategory/{{ subcategory.scid }}" class="btn btn-primary">Update</a>
+                        <!-- Form to delete the subcategory -->
+                        <form method="post" action="/subcategories/delete_subcategory/{{ subcategory.scid }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for message in messages %}
+                                <div class="flash-message">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </tbody>
+        </table>
+        <a href="/subcategories/add_subcategory" class="btn btn-success">Add Subcategory</a>
+    </div>
+</body>
+</html>

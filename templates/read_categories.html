@@ -1,0 +1,53 @@
+<!-- templates/read_categories.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Categories List</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Categories List</h1>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>CID</th>
+                    <th>Name</th>
+                    <th>Info</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in category_list %}
+                <tr>
+                    <td>{{ category.cid }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.info }}</td>
+                    <td>
+                        <!-- Link to the update page for the category -->
+                        <a href="/categories/update_category/{{category.cid}}" class="btn btn-primary">Update</a>
+                        <!-- Form to delete the category -->
+                        <form action="/categories/delete_category/{{ category.cid }}" method="post" style="display: inline;">
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for message in messages %}
+                                <div class="flash-message">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </tbody>
+        </table>
+        <!-- Link to add a new category -->
+        <a href="/categories/add_category" class="btn btn-success">Add New Category</a>
+    </div>
+</body>
+</html>
+

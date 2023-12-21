@@ -1,0 +1,10 @@
+# Ignore site-packages directory
+site-packages/
+# Ignore system files and directories
+ovenv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+

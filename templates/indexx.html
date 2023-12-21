@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Other meta tags and title... -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let access_token = "{{ access_token }}";
+
+        function getUsers() {
+            axios.get('http://localhost:5000/', {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            })
+            .then((response) => {
+                // Handle the response here
+                console.log(response)
+            })
+            .catch((error) => {
+                // Handle the error here
+                console.log(error)
+
+            });
+        }
+
+        // Call the function when the page is loaded
+        document.addEventListener("DOMContentLoaded", getUsers);
+    </script>
+</head>
+<body>
+    {% for user in users %}
+    <h1>hello {{ user.email }}</h1>
+    {% endfor %}
+</body>
+</html>

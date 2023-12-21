@@ -1,0 +1,25 @@
+<!-- templates/add_category.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Category</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Add New Category</h1>
+        <form method="post" action="/categories/create_category">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="info">Info</label>
+                <input type="text" class="form-control" id="info" name="info" required>
+            </div>
+            <input type="submit" value="Add Category" class="btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>

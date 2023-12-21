@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+
+    <link href="{{url_for('static', filename='login.css')}}" rel="stylesheet">
+    <title>Login</title>
+</head>
+<body>
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <form class="mt-md-4 pb-5" method="POST" action="{{ url_for('index.login') }}">
+
+                                <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                                <p class="text-white-50 mb-5">Please enter your login and password!</p>
+                                    {{form.hidden_tag()}}
+                                <div class="form-outline form-white mb-4">
+                                    {{form.email(class="form-control, form-control-lg") }}
+                                </div>
+                                <div class="form-outline form-white mb-4">
+                                    {{form.password(class="form-control, form-control-lg") }}
+                                </div>
+                                {{form.submit(class="btn btn-outline-light btn-lg px-5")}}
+                                <h4>{{error_message}}</h4>
+                            </form>
+                            <div>
+                                <p class="mb-0">Don't have an account? <a href="" class="text-white-50 fw-bold">Sign Up</a>
+                                </p>
+                            </div>
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-success alert-dissmissable" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                                                <span style="padding-left:4px;" aria-hidden="true" >X</span>
+                                            </button>
+                                        {{message}}
+                                        </div>
+                                    {%endfor%}
+                                {%endif%}
+                            {%endwith%}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Function to handle login
+        function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Make a POST request to your backend to perform login
+            axios.post('/login', {
+                email: email,
+                password: password,
+            })
+            .then(response => {
+                // Assuming the response contains the JWT token after successful login
+                const accessToken = response.data.access;
+
+                // Store the JWT token in the client's browser (e.g., in a cookie or local storage)
+                // For simplicity, we use local storage here, but you can choose the appropriate storage method
+                localStorage.setItem('access_token', accessToken);
+
+                // Redirect the user to a protected page or any other logic you want after successful login
+                window.location.href = '/protected-page';
+            })
+            .catch(error => {
+                console.error(error);
+                // Handle login error, display error message to the user, etc.
+                document.getElementById('error-message').textContent = "Login failed. Please check your email and password.";
+            });
+        }
+
+        // Attach the login function to the login button click event
+        document.getElementById('login-btn').addEventListener('click', handleLogin);
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

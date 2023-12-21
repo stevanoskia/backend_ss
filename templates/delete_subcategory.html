@@ -1,0 +1,18 @@
+<!-- templates/delete_subcategory.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Subcategory</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Delete Subcategory</h1>
+        <p>Are you sure you want to delete the subcategory '{{ subcategory.name }}'?</p>
+        <form method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+</body>
+</html>
